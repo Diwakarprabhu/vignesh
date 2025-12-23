@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>College Timetable</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+body {
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background: linear-gradient(135deg,#1a1a2e,#162447,#1f4068,#e43f5a);
+  background-size:400% 400%;
+  animation:gradientBG 15s ease infinite;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:30px 15px;
+  text-transform: capitalize;
+}
+
+@keyframes gradientBG{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+
+header{
+  font-size:2.4rem;
+  font-weight:700;
+  margin-bottom:30px;
+  text-shadow:0 0 15px #00f0ff,0 0 30px #ff6ec7;
+}
+/* Capitalize normal timetable text */
+table td {
+  text-transform: capitalize;
+}
+
+/* Keep headings & Roman numerals uppercase */
+header,
+th,
+.core,
+.day {
+  text-transform: uppercase;
+}
+
+
+
+/* FORM */
+.form{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  max-width:900px;
+  width:100%;
+  margin-bottom:35px;
+}
+
+label{
+  font-weight:600;
+  margin-bottom:6px;
+  display:block;
+}
+
+select,button{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:none;
+  font-size:16px;
+  outline:none;
+}
+
+select{
+  background:rgba(255,255,255,0.12);
+  color:#fff;
+  border:1px solid rgba(255,255,255,0.3);
+}
+
+select option{
+  background:#0b1c2d;
+  color:#fff;
+}
+
+button{
+  background:linear-gradient(135deg,#00f0ff,#ff6ec7);
+  font-weight:700;
+  cursor:pointer;
+  color:#000;
+  transition:0.3s;
+}
+
+button:hover{
+  transform:scale(1.05);
+  color:#fff;
+  box-shadow:0 0 25px #00f0ff,0 0 40px #ff6ec7;
+}
+
+/* TABLE */
+.table-container{
+  width:100%;
+  max-width:1200px;
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:12px;
+
+}
+
+th,td{
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(12px);
+  padding:14px;
+  text-align:center;
+  border-radius:14px;
+  font-weight:600;
+  text-transform:capitalize ;
+}
+
+th{
+  color:#00f0ff;
+  text-shadow:0 0 8px #fff;
+}
+
+td:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 15px #00f0ff,0 0 25px #ff6ec7;
+  transition:0.3s;
+}
+
+.core{
+  background:linear-gradient(135deg,#8e44ad,#c0392b);
+  color:#fff;
+}
+
+.day{
+  color:#ff6ec7;
+  font-weight:700;
+}
+</style>
+</head>
+
+<body>
+
+<header>College Timetable</header>
+
+<div class="form">
+  <div>
+    <label>Degree</label>
+    <select id="degree">
+      <option value="">Select</option>
+      <option value="BSc">B.Sc</option>
+      <option value="BSc">M.Sc</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Year</label>
+    <select id="year">
+      <option value="">Select</option>
+      <option value="I">I Year</option>
+      <option value="II">II Year</option>
+      <option value="III">III Year</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Department</label>
+    <select id="dept">
+      <option value="">Select</option>
+      <option value="BIO">Biochemistry</option>
+      <option value="BBA">BBA</option>
+    </select>
+  </div>
+
+  <div style="align-self:end">
+    <button onclick="showTT()">Submit</button>
+  </div>
+</div>
+<button onclick="downloadTT()" style="background: #2ecc71;width: 200px ;color: white; margin-top: 10px;">Download</button>
+
+
+
+<div id="result" class="table-container"></div>
+
+<script>
+function showTT(){
+  const degree=document.getElementById("degree").value;
+  const year=document.getElementById("year").value;
+  const dept=document.getElementById("dept").value;
+  const result=document.getElementById("result");
+
+  if(!degree || !year || !dept){
+    alert("Please select all fields");
+    return;
+  }
+        /*I-Year Bio-Chemistry */
+
+  if(degree==="BSc" && dept==="BIO" && year==="I"){
+    result.innerHTML=`
+    <table>
+      <tr>
+        <th>Day</th>
+        <th>Period 1</th>
+        <th>Period 2</th>
+        <th>Period 3</th>
+        <th>Period 4</th>
+        <th>Period 5</th>
+      </tr>
+
+      <tr>
+        <td class="day">Day 1</td>
+        <td>Tamil</td>
+        <td>Biomedical Instrumentation</td>
+        <td>Nutritional Biochemistry</td>
+        <td>Allied Chemistry</td>
+        <td>Nutritional Biochemistry</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 2</td>
+        <td>Yoga</td>
+        <td>Allied Chemistry</td>
+        <td>Tamil</td>
+        <td>Nutritional Biochemistry</td>
+        <td>Biomedical Instrumentation</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 3</td>
+        <td>English</td>
+        <td colspan="4" class="core">Core Practical – I</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 4</td>
+        <td>Allied Chemistry</td>
+        <td>Allied Chemistry</td>
+        <td>Allied Chemistry</td>
+        <td>English</td>
+        <td>Tamil</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 5</td>
+        <td>Nutritional Biochemistry</td>
+        <td>Tamil</td>
+        <td>English</td>
+        <td>Nutritional Biochemistry</td>
+        <td>Allied Chemistry</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 6</td>
+        <td>Allied Chemistry</td>
+        <td>Biomedical Instrumentation</td>
+        <td>Biomedical Instrumentation</td>
+        <td>English Lab</td>
+        <td>Allied Chemistry</td>
+      </tr>
+    </table>`;
+    return;
+  }
+  /*II- Year BioChemistry*/
+   if(degree==="BSc" && dept==="BIO" && year==="II"){
+    result.innerHTML=`
+    <table>
+      <tr>
+        <th>Day</th>
+        <th>Period 1</th>
+        <th>Period 2</th>
+        <th>Period 3</th>
+        <th>Period 4</th>
+        <th>Period 5</th>
+      </tr>
+
+      <tr>
+        <td class="day">Day 1</td>
+        <td>Intermediary Metabolism</td>
+        <td>English</td>
+        <td>Allied BioStatistics</td>
+        <td>Genearl Awarness</td>
+        <td>Naan Mudhalvan</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 2</td>
+        <td>Intermediary Metabolism</td>
+         <td>Allied BioStatistics</td>
+        <td>Tamil</td>
+        <td>Intermediary Metabolism</td>
+        <td>English</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 3</td>
+        <td>Tamil</td>
+        <td>Sports BioChemistry</td>
+        <td>Allied BioStatistics</td>
+        <td>Sports BioChemistry</td>
+        <td>Intermediary Metabolism</td>
+       
+      </tr>
+
+      <tr>
+        <td class="day">Day 4</td>
+        <td>English</td>
+        <td>Tamil</td>
+        <td>Intermediary Metabolism</td>
+        <td>Sports BioChemistry</td>
+        <td>Allied BioStatistics</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 5</td>
+        <td colspan="4" class="core">Core Practical – II</td>
+        <td>Naan Mudhavan</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 6</td>
+         <td>Allied BioStatistics</td>
+        <td>English</td>
+        <td colspan="2" class="core">Sports BioChemistry</td>
+        <td>General Awarness</td>
+      </tr>
+    </table>`;
+    return;
+  }
+
+    /*III- Year BioChemistry*/
+   if(degree==="BSc" && dept==="BIO" && year==="III"){
+    result.innerHTML=`
+    <table>
+      <tr>
+        <th>Day</th>
+        <th>Period 1</th>
+        <th>Period 2</th>
+        <th>Period 3</th>
+        <th>Period 4</th>
+        <th>Period 5</th>
+      </tr>
+
+      <tr>
+        <td class="day">Day 1</td>
+        <td colspan="4" class="core">Core Practical – III</td>
+        <td>Naan Mudhalvan</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 2</td>
+        <td>Plant BioChemistry</td>
+        <td>Genetic Engineering</td>
+        <td colspan="2" class="core">Immunology</td>
+        <td>Project</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 3</td>
+        <td>Immunology</td>
+        <td>Plant BioChemistry</td>
+        <td colspan="2" class="core">Genetic Engineering</td>
+        <td>Naan Mudhalvan</td>
+       
+      </tr>
+
+      <tr>
+        <td class="day">Day 4</td>
+        <td>Bioinformatics</td>
+        <td>Plant Biochemistry</td>
+        <td>Immunology</td>
+        <td>Bioinformatics</td>
+        <td>Project</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 5</td>
+        <td colspan="2" class="core">Bioinformatics</td>
+        <td>Genetic Engineering</td> 
+        <td>Plant Biochemistry</td>
+        <td>Project</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 6</td>
+        <td colspan="4" class="core">Core Practical – IV</td>
+        <td>Project</td>
+      </tr>
+    </table>`;
+    return;
+  }
+  /*I- Year BBA*/
+   if(degree==="BSc" && dept==="BBA" && year==="I"){
+    result.innerHTML=`
+    <table>
+      <tr>
+        <th>Day</th>
+        <th>Period 1</th>
+        <th>Period 2</th>
+        <th>Period 3</th>
+        <th>Period 4</th>
+        <th>Period 5</th>
+      </tr>
+
+      <tr>
+        <td class="day">Day 1</td>
+        <td>A/C</td>
+        <td>EM</td>
+        <td colspan="2" class="core">MC</td>
+        <td>TAM</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 2</td>
+        <td>OB</td>
+        <td>ENG</td>
+        <td>EM</td>
+        <td>TAM</td>
+        <td>MC</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 3</td>
+        <td>A/C</td>
+        <td>MC</td>
+        <td>TAM</td>
+        <td>ENG</td>
+        <td>OB</td>
+       
+      </tr>
+
+      <tr>
+        <td class="day">Day 4</td>
+        <td>ENG</td>
+        <td>A/C</td>
+        <td>EM</td>
+        <td>OB</td>
+        <td>MC</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 5</td>
+        <td>ENG</td>
+        <td>TAM</td> 
+        <td>OB</td>
+        <td colspan="2" class="core">A/C</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 6</td>
+        <td>OB</td>
+        <td>A/C</td>
+        <td>EM</td>
+        <td>MC</td>
+        <td>OB</td>
+      </tr>
+    </table>`;
+    return;
+  }
+/*III- Year BBA*/
+   if(degree==="BSc" && dept==="BBA" && year==="III"){
+    result.innerHTML=`
+    <table>
+      <tr>
+        <th>Day</th>
+        <th>Period 1</th>
+        <th>Period 2</th>
+        <th>Period 3</th>
+        <th>Period 4</th>
+        <th>Period 5</th>
+      </tr>
+
+      <tr>
+        <td class="day">Day 1</td>
+        <td>IM</td>
+        <td>MSD(AKE)</td>
+        <td>NM</td>
+        <td>BIP</td>
+        <td>CRM</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 2</td>
+        <td>BIP</td>
+        <td>CRM</td>
+        <td>IM</td>
+        <td>PROJECT(AKE)</td>
+        <td>MSD(CH)</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 3</td>
+        <td>MSD(CH)</td>
+        <td>BIP</td>
+        <td>CRM</td>
+        <td>IM</td>
+        <td>PLACEMENT</td>
+       
+      </tr>
+
+      <tr>
+        <td class="day">Day 4</td>
+        <td>CRM</td>
+        <td>IM</td>
+        <td>BIP</td>
+        <td>MSD(CH)</td>
+        <td>PROJECT(ALP)</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 5</td>
+        <td>IM</td>
+        <td>MSD(CH)</td> 
+        <td>PROJECT(ALP)</td>
+        <td>PROJECT(AKE)</td>
+        <td>CRM</td>
+      </tr>
+
+      <tr>
+        <td class="day">Day 6</td>
+        <td>BIP</td>
+        <td>MSD(AKE)</td>
+        <td>IM</td>
+        <td>PROJECT(CH)</td>
+        <td>NM</td>
+      </tr>
+    </table>`;
+    return;
+  }
+
+  result.innerHTML="<p>No timetable available</p>";
+}
+function downloadTT() {
+  const resultDiv = document.getElementById("result");
+  
+  // Check if a timetable is actually showing
+  if (resultDiv.innerHTML === "" || resultDiv.innerHTML.includes("No timetable")) {
+    alert("Please generate a timetable first.");
+    return;
+  }
+
+  // Use html2canvas to capture the result div
+  html2canvas(resultDiv, {
+    backgroundColor: null, // Keeps the background transparent or as styled
+    scale: 2, // Higher quality for mobile screens
+    logging: false,
+    useCORS: true
+  }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = 'College_Timetable.png';
+    link.href = canvas.toDataURL("image/png");
+    
+    // For mobile compatibility, we programmatically click the link
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+}
+
+
+</script>
+
+</body>
+</html>
